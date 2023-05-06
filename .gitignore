@@ -1,0 +1,9 @@
+venv/*
+db.sqlite3
+__pychache___/*
+/__pycache__/*
+movie_and_series/movie_api/__pycache__/*
+movie_and_series/movie_api/migrations/__pycache__/*
+movie_and_series/movie_and_series/__pycache__/*
+.vscode/*
+

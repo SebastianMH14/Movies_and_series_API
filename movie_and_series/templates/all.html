@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+        integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Películas y Series</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/get-random/">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/search-movie/">Buscar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="javascript:logout()">Cerrar Sesión</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-5 text-center">
+        <button class="btn btn-primary mt-4" onclick="getAll('name')">Ordenar por Nombre</button>
+        <button class="btn btn-primary mt-4" onclick="getAll('genre')">Ordenar por Genero</button>
+        <button class="btn btn-primary mt-4" onclick="getAll('type')">Ordenar por Tipo</button>
+        <button class="btn btn-primary mt-4" onclick="getAll('rating')">Ordenar por Calificación</button>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center" id="movies"></div>
+
+
+    </div>
+</body>
+<script>
+    const token = localStorage.getItem('token')
+
+    window.onload = function () {
+        if (!token) {
+            window.location.href = "/login/"
+        }
+    }
+
+    document.querySelector('.navbar-toggler').addEventListener('click', function () {
+        document.querySelector('#navbarNav').classList.toggle('show');
+    });
+    function getAll(param) {
+        console.log(param)
+        fetch(`/all/?sort_by=${param}`, { headers: { Authorization: `Token ${token}` } })
+            .then(response => response.json()
+            )
+            .then(data => {
+                document.getElementById('movies').innerHTML = '';
+                console.log(data)
+                for (movie of data) {
+                    const movieTemplate = `
+                    <div class="card mb-3" data-movie-id="${movie.id}">
+    <div class="card-body">
+        <h5 class="card-title">${movie.name}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">${movie.genre}</h6>
+        <p  id="view-count-${movie.id}"class="card-text">Vistas: ${movie.views}</p>
+        <p id="rate-count-${movie.id}class="card-text ${movie.rated_by_user ? 'text-success' : ''}">Puntuación: ${movie.average_rating}</p>
+        <button id="rate-btn-${movie.id}" class="btn btn-primary" onclick="rateMovie(${movie.id}, this)">Puntuar</button>
+        <button id="mark-btn-${movie.id}" class="btn btn-primary" onclick="markAsViewed(${movie.id}, this)">Marcar como vista</button>
+    </div>
+</div>`;
+                    document.getElementById('movies').innerHTML += movieTemplate;
+                }
+
+            });
+    }
+    function rateMovie(movieId, buttonElement) {
+        const rating = prompt("¿Qué calificación le das a esta película? (1-5)");
+        if (rating) {
+            fetch(`/rate-movie/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${token}`
+                },
+                body: JSON.stringify({ rating: rating, movie_id: movieId })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        alert('Ya has calificado esta película');
+                        buttonElement.textContent = 'Calificada';
+                        buttonElement.disabled = true;
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data)
+                    buttonElement.textContent = 'Calificada';
+                    buttonElement.disabled = true;
+                    const movieCard = document.querySelector(`#movies [data-movie-id="${movieId}"]`);
+                    const ratingCount = movieCard.querySelector(`#rate-count-${movieId}`);
+                    ratingElement.textContent = `Puntuación: ${data.average_rating}`;
+
+                })
+                .catch(error => console.error(error));
+        }
+    }
+
+    function markAsViewed(movieId, buttonElement) {
+        fetch(`/mark_view/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${token}`
+            },
+            body: JSON.stringify({ movie_id: movieId })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                buttonElement.textContent = 'Vista';
+                buttonElement.disabled = true;
+                const movieCard = document.querySelector(`#movies [data-movie-id="${movieId}"]`);
+                const viewCount = movieCard.querySelector(`#view-count-${movieId}`);
+                viewCount.innerHTML = `Vistas: ${data.views}`;
+
+            })
+            .catch(error => console.log(error));
+    }
+
+
+
+    function logout() {
+        localStorage.removeItem('token')
+        window.location.href = "/login/"
+    }
+</script>
+
+</html>
