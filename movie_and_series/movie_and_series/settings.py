@@ -96,7 +96,7 @@ DATABASES = {
         'NAME': config('PGDATABASE', cast=str),
         'USER': config('PGUSER', cast=str),
         'PASSWORD': config('PGPASSWORD', cast=str),
-        'HOST': config('DATABASE_URL', cast=str),
+        'HOST': config('PGHOST', cast=str),
         'PORT': '7745',
     }
 }
