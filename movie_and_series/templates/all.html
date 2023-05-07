@@ -71,8 +71,8 @@
     <div class="card-body">
         <h5 class="card-title">${movie.name}</h5>
         <h6 class="card-subtitle mb-2 text-muted">${movie.genre}</h6>
-        <p  id="view-count-${movie.id}"class="card-text">Vistas: ${movie.views}</p>
-        <p id="rate-count-${movie.id}class="card-text">Puntuación: ${movie.average_rating}</p>
+        <p id="view-count-${movie.id}" class="card-text">Vistas: ${movie.views}</p>
+        <p id="rate-count-${movie.id}" class="card-text">Puntuación: ${movie.average_rating}</p>
         <button id="rate-btn-${movie.id}" class="btn btn-primary" onclick="rateMovie(${movie.id}, this)">Puntuar</button>
         <button id="mark-btn-${movie.id}" class="btn btn-primary" onclick="markAsViewed(${movie.id}, this)">Marcar como vista</button>
     </div>
