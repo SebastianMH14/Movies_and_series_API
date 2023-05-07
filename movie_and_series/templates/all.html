@@ -109,7 +109,7 @@
                     buttonElement.disabled = true;
                     const movieCard = document.querySelector(`#movies [data-movie-id="${movieId}"]`);
                     const ratingCount = movieCard.querySelector(`#rate-count-${movieId}`);
-                    ratingElement.textContent = `Puntuación: ${data.average_rating}`;
+                    ratingCount.innerHTML = `Puntuación: ${data.average_rating}`;
 
                 })
                 .catch(error => console.error(error));
@@ -125,7 +125,14 @@
             },
             body: JSON.stringify({ movie_id: movieId })
         })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    alert('Ya has visto esta película');
+                    buttonElement.textContent = 'Vista';
+                    buttonElement.disabled = true;
+                }
+                return response.json();
+            })
             .then(data => {
                 console.log(data)
                 buttonElement.textContent = 'Vista';
