@@ -58,6 +58,8 @@ def mark_view(request):
     movie = Movie.objects.get(id=movie_id)
     if movie:
         view, created = View.objects.get_or_create(user=user, movie=movie)
+        if not created:
+            return Response({'message': 'Movie already viewed.'}, status=status.HTTP_400_BAD_REQUEST)
         view.view = True
         view.save()
     movie = Movie.objects.get(id=movie_id)
