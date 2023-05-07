@@ -60,6 +60,8 @@ def mark_view(request):
         view, created = View.objects.get_or_create(user=user, movie=movie)
         view.view = True
         view.save()
+    else:
+        return Response({'message': 'Movie not found.'})
     movie = Movie.objects.get(id=movie_id)
     return Response({'message': 'success', 'views': movie.views})
 
@@ -74,7 +76,7 @@ def rate_movie(request):
     rating, created = Rating.objects.get_or_create(
         movie=movie, user=request.user, rating=rating_value)
 
-    # Si la calificación ya existe, actualizarla con la nueva calificación
+    # Si la calificación ya existe para el usuario, no permita que se cree una nueva
     if not created:
         return Response({'message': 'Movie already rated.'})
     else:
