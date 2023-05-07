@@ -69,7 +69,7 @@ def mark_view(request):
 @api_view(['POST'])
 def rate_movie(request):
     movie_id = request.data.get('movie_id')
-    rating_value = request.data.get('rating')
+    rating_value = float(request.data.get('rating'))
 
     # Obtener la película y la calificación existente (si existe)
     movie = get_object_or_404(Movie, id=movie_id)
@@ -83,7 +83,7 @@ def rate_movie(request):
         rating.num_ratings += 1
 
     # Actualizar la calificación total y guardar la calificación
-    rating.total_rating += float(rating_value)
+    rating.total_rating += rating_value
     rating.save()
 
     # Actualizar la calificación promedio de la película
