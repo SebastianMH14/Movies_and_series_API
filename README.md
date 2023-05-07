@@ -1,34 +1,45 @@
 # API de Streaming y Vista de Películas
-Este es un proyecto de ejemplo de una API de streaming de películas y series, junto con una vista básica de frontend para consumir esa API.
+### Este es un proyecto de una API de streaming de películas y series, junto con una vista básica de frontend para consumir esa API.
+
+### Instalación y uso
+
+Use [git](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) para clonar este repositorio en su máquina local. 
+Primero clona el repositorio y descarga las funcionalidades necesarias:
+
+```bash
+git clone https://github.com/SebastianMH14/Movies_and_series_API
+```
+
+```bash
+git checkout develop
+```
+
+Necesitas tener instalado Python
+
+1.  Crear un entorno virtual con `python -m venv venv`
+2.  activar el entorno virtual con `source venv/bin/activate`
+3.  instalar las dependencias con `pip install -r requirements.txt`
+4.  crear la base de datos con `python manage.py makemigrations`
+5.  migrar la base de datos con `python manage.py migrate`
+7.  correr el servidor con `python manage.py runserver`
 
 La API está construida usando el framework Django, y expone los siguientes endpoints:
 
-/api/random/: obtiene una película o serie aleatoria.
-/api/movies/: obtiene una lista de todas las películas y series, ordenadas por nombre, tipo, género o puntaje.
-/api/movies/?name=<nombre>: filtra las películas y series por nombre.
-/api/movies/?type=<tipo>: filtra las películas y series por tipo (película o serie).
-/api/movies/?genre=<género>: filtra las películas y series por género.
-/api/mark/: marca una película o serie como vista.
-/api/rate/: puntúa una película o serie.
+`/random/`: obtiene una película o serie aleatoria.
+`/all/`: obtiene una lista de todas las películas y series, ordenadas por nombre, tipo, género o puntaje.
+`/search/?name=<nombre>`: filtra las películas y series por nombre.
+`/search/?type=<tipo>`: filtra las películas y series por tipo (película o serie).
+`/search/?genre=<género>`: filtra las películas y series por género.
+`/mark_view/`: marca una película o serie como vista.
+`/rate-movie/`: puntúa una película o serie.
 La vista de frontend se encuentra en la raíz del sitio web y muestra una lista de películas y series, así como un formulario para filtrar y marcar o puntuar las películas.
 
-Instalación y uso
-Para utilizar este proyecto, se recomienda seguir los siguientes pasos:
+Para aprender a usar los endpoints de la API, puedes consultar la documentación de Postman.
 
-Clonar el repositorio: git clone https://github.com/tu_usuario/tu_repositorio.git
-Instalar las dependencias: pip install -r requirements.txt
-Configurar la base de datos: python manage.py migrate
-Crear un superusuario: python manage.py createsuperuser
-Iniciar el servidor: python manage.py runserver
-Acceder al sitio web en un navegador: http://localhost:8000/
-Para acceder a la vista de frontend, es necesario iniciar sesión con una cuenta de usuario. Puedes crear una cuenta de usuario desde la página de registro, o utilizar la cuenta de superusuario que has creado en el paso anterior.
-
-Tecnologías utilizadas
-Python 3.8
-Django 3.2
-Django REST framework
-HTML
-CSS
-JavaScript
-Autor
-Este proyecto fue desarrollado por Tu Nombre.
+### Tecnologías utilizadas
+- Python
+- Django
+- Django REST framework
+- HTML
+- CSS
+- JavaScript

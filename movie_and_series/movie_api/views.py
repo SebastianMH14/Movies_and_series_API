@@ -74,7 +74,7 @@ def rate_movie(request):
     rating, created = Rating.objects.get_or_create(
         movie=movie, user=request.user, rating=rating_value)
 
-    # Si la calificación ya existe, actualizarla con la nueva calificación
+    # Si la calificación ya existe, no permitir que el usuario la califique nuevamente
     if not created:
         return Response({'message': 'Movie already rated.'})
     else:
