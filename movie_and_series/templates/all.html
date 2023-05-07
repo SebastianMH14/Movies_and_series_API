@@ -134,12 +134,13 @@
                 return response.json();
             })
             .then(data => {
-                console.log(data)
                 buttonElement.textContent = 'Vista';
                 buttonElement.disabled = true;
                 const movieCard = document.querySelector(`#movies [data-movie-id="${movieId}"]`);
                 const viewCount = movieCard.querySelector(`#view-count-${movieId}`);
-                viewCount.innerHTML = `Vistas: ${data.views}`;
+                if (data.views) {
+                    viewCount.innerHTML = `Vista: ${data.views}`;
+                }
 
             })
             .catch(error => console.log(error));
