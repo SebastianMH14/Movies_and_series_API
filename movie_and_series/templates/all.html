@@ -106,7 +106,7 @@
                     buttonElement.disabled = true;
                     const movieCard = document.querySelector(`#movies [data-movie-id="${movieId}"]`);
                     const ratingCount = movieCard.querySelector(`#rate-count-${movieId}`);
-                    ratingCount.innerHTML = `Puntuación: ${data.average_rating}`;
+                    ratingCount.innerHTML = `Puntuación: ${data.rating}`;
 
                 })
                 .catch(error => console.error(error));
