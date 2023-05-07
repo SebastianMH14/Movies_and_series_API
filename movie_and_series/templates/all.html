@@ -60,13 +60,11 @@
         document.querySelector('#navbarNav').classList.toggle('show');
     });
     function getAll(param) {
-        console.log(param)
         fetch(`/all/?sort_by=${param}`, { headers: { Authorization: `Token ${token}` } })
             .then(response => response.json()
             )
             .then(data => {
                 document.getElementById('movies').innerHTML = '';
-                console.log(data)
                 for (movie of data) {
                     const movieTemplate = `
                     <div class="card mb-3" data-movie-id="${movie.id}">
@@ -104,7 +102,6 @@
                     return response.json();
                 })
                 .then(data => {
-                    console.log(data)
                     buttonElement.textContent = 'Calificada';
                     buttonElement.disabled = true;
                     const movieCard = document.querySelector(`#movies [data-movie-id="${movieId}"]`);
@@ -134,12 +131,13 @@
                 return response.json();
             })
             .then(data => {
-                console.log(data)
                 buttonElement.textContent = 'Vista';
                 buttonElement.disabled = true;
                 const movieCard = document.querySelector(`#movies [data-movie-id="${movieId}"]`);
                 const viewCount = movieCard.querySelector(`#view-count-${movieId}`);
-                viewCount.innerHTML = `Vistas: ${data.views}`;
+                if (data.views) {
+                    viewCount.innerHTML = `Vista: ${data.views}`;
+                }
 
             })
             .catch(error => console.log(error));
